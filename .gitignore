@@ -1,0 +1,9 @@
+# Local backups of the raw Shiny downloads, kept from before the duplicate
+# V (Visa) column was removed. Local safety net only.
+*.bak
+
+# R session state
+.Rhistory
+.RData
+.Ruserdata
+.Rproj.user/
