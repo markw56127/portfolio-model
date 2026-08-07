@@ -1,18 +1,21 @@
 # Portfolio project, parts (b)-(f)
 # Monthly adjusted close prices, first 5 years only (2017-01 .. 2021-12).
 
+local({
+  f <- sub("^--file=", "", grep("^--file=", commandArgs(FALSE), value = TRUE))
+  if (length(f) == 1L && basename(f) == "portfolio.R")
+    setwd(dirname(normalizePath(f)))
+})
+
+
+DATA <- ".."
+
 # ---- (b) import prices and convert to returns -------------------------------
 
 # check.names = FALSE keeps "^GSPC" intact instead of mangling it to "X.GSPC".
-a <- read.csv("stockData_train.csv", sep = ",", header = TRUE,
+a <- read.csv(file.path(DATA, "stockData_train.csv"), sep = ",", header = TRUE,
               check.names = FALSE)
 
-# A ticker entered twice yields two identical columns, which makes the 30x30
-# covariance matrix singular and breaks solve() in part (f). The csv had V
-# (Visa) duplicated; it has since been removed from the file, so this guard
-# should never fire -- but it fails loudly if the data is ever re-downloaded
-# with a repeat. Check before subsetting: `[.data.frame` runs make.unique on
-# its result, which would rename a second V to "V.1" and hide it here.
 stopifnot(!any(duplicated(names(a))))
 
 prices <- a[, -1]                     # drop the leading row-index column
@@ -25,8 +28,6 @@ stopifnot(ncol(P) == 31)              # ^GSPC + 30 stocks
 stopifnot(!anyNA(P))
 
 # Simple (arithmetic) returns: R_t = P_t / P_{t-1} - 1.
-# Simple rather than log returns because portfolio return is a linear
-# combination of asset returns only under this definition.
 n <- nrow(P)
 ret <- P[-1, ] / P[-n, ] - 1          # 59 x 31
 
@@ -87,9 +88,6 @@ cat("\n")
 surface <- "#fcfcfb"; ink <- "#0b0b0b"; muted <- "#898781"; grid <- "#e1e0d9"
 c_gspc <- "#2a78d6"; c_eq <- "#eb6834"; c_min <- "#1baf7a"
 
-# Nudge overlapping labels apart, pushing along whichever axis they overlap
-# least. Entries flagged `fixed` act as obstacles but never move, so the three
-# highlight labels hold their position and the ticker labels flow around them.
 repel <- function(x, y, lab, cex, fixed, iter = 600) {
   w <- strwidth(lab,  cex = cex) * 1.08
   h <- strheight(lab, cex = cex) * 1.85

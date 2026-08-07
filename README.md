@@ -59,7 +59,8 @@ r <- (a[-1,3:ncol(a)]-a[-nrow(a),3:ncol(a)])/a[-nrow(a),3:ncol(a)]
 
 ## Progress
 
-Everything below is produced by `portfolio.R`.
+Everything below is produced by `Project1/portfolio.R`. The rendered write-up
+is `Project1/Submission/report.pdf`, knitted from `Project1/report.Rmd`.
 
 **(b) Prices to returns.** Simple (arithmetic) returns,
 `R_t = P_t / P_{t-1} - 1`. Simple rather than log returns because portfolio
@@ -67,12 +68,12 @@ return is a linear combination of asset returns only under this definition.
 60 monthly prices yield 59 monthly returns across 31 assets.
 
 **(c) Means, standard deviations, covariance matrix.** Per-asset statistics for
-all 31 assets in `asset_stats.csv`; the 31×31 variance-covariance matrix in
-`covmat.csv`. Portfolio construction below uses the 30×30 submatrix that
-excludes `^GSPC`.
+all 31 assets in `Project1/asset_stats.csv`; the 31×31 variance-covariance
+matrix in `Project1/covmat.csv`. Portfolio construction below uses the 30×30
+submatrix that excludes `^GSPC`.
 
 **(d) Risk–return plot.** All 31 assets in mean/standard-deviation space, with
-the two portfolios overlaid — `risk_return.png`.
+the two portfolios overlaid — `Project1/risk_return.png`.
 
 **(e) Equal allocation portfolio.** Equal weights across the 30 stocks
 (w = 1/30 each).
@@ -94,7 +95,7 @@ of ones.
 | Equal allocation (1/30) | 2.34% | 4.73% |
 | Minimum risk | 1.59% | 2.07% |
 
-![Risk and return](risk_return.png)
+![Risk and return](Project1/risk_return.png)
 
 Two observations worth carrying forward:
 
@@ -111,17 +112,23 @@ Two observations worth carrying forward:
   to hold out of sample. Topics 4–6 introduce the structured covariance models
   (single index, constant correlation, multigroup) that address exactly this.
 
-## Files
+## Layout
 
-| File | Contents |
+Shared inputs live at the repo root because later projects reuse them; each
+project's own code and output lives in its own folder.
+
+| Path | Contents |
 |---|---|
-| `portfolio.R` | Analysis for parts (b)–(f) |
 | `app.R` | Shiny app used to download prices from Yahoo Finance |
-| `stockData_train.csv` / `stockData_test.csv` | Adjusted close prices |
-| `returns_train.csv` | 59 × 31 monthly returns |
-| `asset_stats.csv` | Per-asset mean and standard deviation |
-| `covmat.csv` | 31 × 31 variance-covariance matrix |
-| `risk_return.png` | Risk–return plot |
+| `stockData_train.csv` / `stockData_test.csv` | Adjusted close prices, shared across projects |
+| `renv.lock`, `.Rprofile`, `renv/` | Pinned project library |
+| `Project1/report.Rmd` | Write-up, knitted to pdf |
+| `Project1/portfolio.R` | Analysis for parts (b)–(f); sourced by the report |
+| `Project1/returns_train.csv` | 59 × 31 monthly returns |
+| `Project1/asset_stats.csv` | Per-asset mean and standard deviation |
+| `Project1/covmat.csv` | 31 × 31 variance-covariance matrix |
+| `Project1/risk_return.png` | Risk–return plot |
+| `Project1/Submission/` | The rendered deliverable |
 
 ## Reproducing
 
@@ -132,11 +139,13 @@ packages install into a project-local library rather than the global one.
 renv::restore()     # installs the exact versions in renv.lock
 ```
 
-Then, from the project directory:
+Then, from the repo root:
 
 ```
-Rscript portfolio.R
+Rscript Project1/portfolio.R
 ```
 
-Starting R in this directory activates the project library automatically via
-`.Rprofile` — there is no environment to activate by hand.
+Or open `Project1/report.Rmd` in RStudio and knit, which runs the same analysis
+and renders the write-up. Starting R in the repo root activates the project
+library automatically via `.Rprofile` — there is no environment to activate by
+hand.

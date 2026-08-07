@@ -1,0 +1,129 @@
+---
+title: "Project 1"
+author: "Mark Wang"
+output:
+  pdf_document:
+    toc: true
+    number_sections: false
+  html_document:
+    toc: true
+    toc_float: true
+    number_sections: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, comment = "#>", warning = FALSE,
+                      message = FALSE)
+
+# The analysis lives in portfolio.R; this report reads its results rather than
+# re-implementing them, so the document cannot drift from the script. Knitting
+# sets the working directory to this file's folder, which is what portfolio.R
+# expects.
+invisible(capture.output(source("portfolio.R")))
+
+pct <- function(x, d = 2) sprintf(paste0("%.", d, "f%%"), x * 100)
+```
+
+## (a)
+
+Monthly adjusted close prices were downloaded from Yahoo Finance through the
+Shiny app, covering January 2017 through December 2021. Five sectors, six
+stocks each.
+
+```{r sectors}
+tk  <- setdiff(colnames(ret), "^GSPC")
+sec <- c("Technology", "Communication Services", "Financial Services",
+         "Consumer Cyclical", "Healthcare")
+knitr::kable(data.frame(
+  Sector  = sec,
+  Tickers = vapply(1:5, function(i)
+    paste(tk[((i - 1) * 6 + 1):(i * 6)], collapse = ", "), character(1))
+))
+```
+
+`^GSPC` is carried alongside as the market index as asked for, for 31 assets in total.
+
+## (b)
+
+Adjusted close prices are converted to simple (arithmetic) monthly returns:
+
+$$R_t = \frac{P_t - P_{t-1}}{P_{t-1}} = \frac{P_t}{P_{t-1}} - 1$$
+
+```{r ret-dim}
+cat(sprintf("prices : %d months x %d assets\n", nrow(P), ncol(P)))
+cat(sprintf("returns: %d months x %d assets   (%s to %s)\n",
+            nrow(ret), ncol(ret), format(dates[2]), format(dates[length(dates)])))
+```
+
+The first month is lost to differencing, so we have
+`r nrow(ret)` monthly returns.
+
+```{r ret-head}
+knitr::kable(round(ret[1:4, 1:7], 4), caption = "First four rows (first 7 assets)")
+```
+
+## (c)
+
+```{r stats}
+knitr::kable(
+  data.frame(Asset = names(means),
+             `Mean (%)` = round(means * 100, 3),
+             `Std. dev. (%)` = round(stdev * 100, 3),
+             check.names = FALSE),
+  row.names = FALSE, caption = "All 31 assets, monthly")
+```
+
+The variance-covariance matrix is `r nrow(covmat)` × `r ncol(covmat)`; the top-left
+corner is shown below. The full matrix is too wide to display at a readable size,
+and is computed in the appendix code.
+
+```{r covmat}
+knitr::kable(signif(covmat[1:6, 1:6], 3))
+```
+
+## (d)
+
+```{r plot, out.width="100%"}
+knitr::include_graphics("risk_return.png")
+```
+
+Parts (e) and (f) are marked on the same plot.
+
+## (e)
+
+Equal weights across the 30 stocks, $w_i = 1/30$. Portfolio mean is
+$\bar{R}_p = w'\bar{R}$ and standard deviation is $\sigma_p = \sqrt{w'\Sigma w}$.
+
+```{r equal}
+cat(sprintf("mean = %.4f  (%s per month)\n  sd = %.4f  (%s)\n",
+            mu_eq, pct(mu_eq), sd_eq, pct(sd_eq)))
+```
+
+## (f)
+
+The weights of the minimum risk portfolio are
+
+$$x = \frac{\Sigma^{-1}\mathbf{1}}{\mathbf{1}'\Sigma^{-1}\mathbf{1}}$$
+
+where $\Sigma$ is the 30 × 30 variance-covariance matrix of the 30 stocks and
+$\mathbf{1}$ is a 30 × 1 vector of ones.
+
+```{r minrisk}
+cat(sprintf("mean = %.4f  (%s per month)\n  sd = %.4f  (%s)\n",
+            mu_min, pct(mu_min), sd_min, pct(sd_min)))
+cat(sprintf("\nweights sum to %.4f, range %.3f to %.3f, %d short positions\n",
+            sum(x_min), min(x_min), max(x_min), sum(x_min < 0)))
+```
+
+```{r weights}
+w <- sort(x_min[, 1], decreasing = TRUE)
+knitr::kable(data.frame(
+  Stock = names(w)[c(1:5, 26:30)],
+  Weight = round(unname(w)[c(1:5, 26:30)], 4),
+  row.names = NULL), caption = "Five largest and five smallest weights")
+```
+
+## Appendix: full code
+
+```{r code, echo=TRUE, eval=FALSE, code=readLines("portfolio.R")}
+```
