@@ -16,7 +16,10 @@ sequence of topics:
 6. Multigroup and multi-index models (short sales allowed)
 7. Portfolio performance
 
-Work so far covers topic 1 and the entry point to topic 2.
+Work so far: **Project 1** covers topic 1 and the entry point to topic 2.
+**Project 2** covers topics 2 and 3 — the analytic efficient frontier from
+Merton (1972), "An Analytic Derivation of the Efficient Portfolio Frontier"
+(JFQA 7(4)), and the mutual fund theorem.
 
 ## Stock selection
 
@@ -129,6 +132,18 @@ project's own code and output lives in its own folder.
 | `Project1/covmat.csv` | 31 × 31 variance-covariance matrix |
 | `Project1/risk_return.png` | Risk–return plot |
 | `Project1/Submission/` | The rendered deliverable |
+| `Project2/report.Rmd` | Write-up, knitted to pdf |
+| `Project2/frontier.R` | Analysis for parts (a)–(h); sourced by the report |
+| `Project2/fig_*.png` | Parabola, hyperbola, and mutual-fund plots |
+| `Project2/Submission/` | The rendered deliverable |
+
+Each project recomputes the returns from the shared csvs rather than importing
+the other's objects, so the two stay independent. They are verifiably the same
+numbers: the price matrix, the 59 × 30 return matrix, the mean vector and the
+covariance matrix are bitwise identical between the projects, and the minimum
+risk portfolio agrees to ten decimals though Project 1 reaches it via
+$\Sigma^{-1}\mathbf{1}/\mathbf{1}'\Sigma^{-1}\mathbf{1}$ and Project 2 via
+$A/C$ and $\sqrt{1/C}$.
 
 ## Reproducing
 

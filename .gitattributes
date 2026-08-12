@@ -1,0 +1,5 @@
+# Knitted reports are build output, not source. Without this a single
+# self-contained html report outweighs every .R file in the repo and GitHub's
+# language bar reports the project as ~95% HTML. linguist-generated also
+# collapses these files in diffs, which is what you want for rendered output.
+Project*/Submission/** linguist-generated=true
