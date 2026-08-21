@@ -21,10 +21,15 @@ Work so far: **Project 1** covers topic 1 and the entry point to topic 2.
 Merton (1972), "An Analytic Derivation of the Efficient Portfolio Frontier"
 (JFQA 7(4)), and the mutual fund theorem. **Project 3** stays on topics 2 and 3
 but adds a risk free asset: the tangency portfolio, the capital allocation
-line, and tracing the frontier from two tangency portfolios.
+line, and tracing the frontier from two tangency portfolios. **Project 4**
+moves to topic 4, the single index model: regressing each stock on the index
+to get $\alpha_i$, $\beta_i$, $\sigma^2_{\epsilon_i}$, rebuilding the
+covariance matrix from those estimates, and redrawing Project 2's frontier on
+the new inputs.
 
 Project 3 works on a different, smaller dataset than Projects 1 and 2 — see
-Data below.
+Data below. Project 4 returns to the shared data, since its frontier has to be
+comparable with Project 2's.
 
 ## Stock selection
 
@@ -147,6 +152,10 @@ project's own code and output lives in its own folder.
 | `Project3/tangency.R` | Analysis for parts (a)–(i); sourced by the report |
 | `Project3/fig_*.png` | Two-stock possibilities curve, CAL, and traced frontier |
 | `Project3/Submission/` | The rendered deliverable |
+| `Project4/report.Rmd` | Write-up, knitted to pdf |
+| `Project4/single_index.R` | Analysis for parts 1–3; sourced by the report |
+| `Project4/fig_*.png` | Historical and single index frontiers, full view and zoom |
+| `Project4/Submission/` | The rendered deliverable |
 
 Each project recomputes the returns from the shared csvs rather than importing
 the other's objects, so the two stay independent. They are verifiably the same
