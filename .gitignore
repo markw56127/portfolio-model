@@ -15,4 +15,8 @@
 *.toc
 *.out
 *.synctex.gz
+*.log
 *_files/
+
+# macOS folder metadata
+.DS_Store

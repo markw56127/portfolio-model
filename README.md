@@ -19,7 +19,12 @@ sequence of topics:
 Work so far: **Project 1** covers topic 1 and the entry point to topic 2.
 **Project 2** covers topics 2 and 3 — the analytic efficient frontier from
 Merton (1972), "An Analytic Derivation of the Efficient Portfolio Frontier"
-(JFQA 7(4)), and the mutual fund theorem.
+(JFQA 7(4)), and the mutual fund theorem. **Project 3** stays on topics 2 and 3
+but adds a risk free asset: the tangency portfolio, the capital allocation
+line, and tracing the frontier from two tangency portfolios.
+
+Project 3 works on a different, smaller dataset than Projects 1 and 2 — see
+Data below.
 
 ## Stock selection
 
@@ -48,7 +53,7 @@ Monthly adjusted close prices downloaded through the Shiny app in `app.R`.
 | `stockData_train.csv` | 2017-01 – 2021-12 | 60 months |
 | `stockData_test.csv` | 2022-01 – 2026-07 | 55 months |
 
-All analysis below uses the training file only — the first five years, as the
+Projects 1 and 2 use the training file only — the first five years, as the
 assignment requires. The test period is held back for out-of-sample evaluation
 in topic 7.
 
@@ -136,6 +141,12 @@ project's own code and output lives in its own folder.
 | `Project2/frontier.R` | Analysis for parts (a)–(h); sourced by the report |
 | `Project2/fig_*.png` | Parabola, hyperbola, and mutual-fund plots |
 | `Project2/Submission/` | The rendered deliverable |
+| `Project3/statc183c283_5stocks.txt` | Close monthly prices, 5 stocks, 1986-01 – 2003-12 |
+| `Project3/statc183c283_abc.txt` | 2,499 weight combinations summing to 1, for the cloud in (e) |
+| `Project3/report.Rmd` | Write-up, knitted to pdf |
+| `Project3/tangency.R` | Analysis for parts (a)–(i); sourced by the report |
+| `Project3/fig_*.png` | Two-stock possibilities curve, CAL, and traced frontier |
+| `Project3/Submission/` | The rendered deliverable |
 
 Each project recomputes the returns from the shared csvs rather than importing
 the other's objects, so the two stay independent. They are verifiably the same
@@ -163,4 +174,13 @@ Rscript Project1/portfolio.R
 Or open `Project1/report.Rmd` in RStudio and knit, which runs the same analysis
 and renders the write-up. Starting R in the repo root activates the project
 library automatically via `.Rprofile` — there is no environment to activate by
-hand.
+hand. Note that the analysis scripts `setwd()` to their own folder, but
+`rmarkdown::render()` must be called from the repo root, otherwise `.Rprofile`
+never runs and the project library is not on the search path.
+
+Knitting to pdf needs pandoc and a LaTeX installation on top of the R packages.
+RStudio bundles pandoc; from a plain `Rscript` call, point at it with
+`RSTUDIO_PANDOC`. BasicTeX does not ship every package the rmarkdown pdf
+template loads — `framed`, `xurl` and `titling` were added to the user tree
+with `tlmgr init-usertree && tlmgr --usermode install framed xurl titling`,
+which needs no sudo.
