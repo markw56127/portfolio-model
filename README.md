@@ -156,6 +156,7 @@ project's own code and output lives in its own folder.
 | `Project4/single_index.R` | Analysis for parts 1–3; sourced by the report |
 | `Project4/fig_*.png` | Historical and single index frontiers, full view and zoom |
 | `Project4/Submission/` | The rendered deliverable |
+| `Homework4/homework4.R` | Homework 4 exercise 1: the PRESS decomposition, using period 1 betas from the training file to predict period 2 betas from the test file |
 
 Each project recomputes the returns from the shared csvs rather than importing
 the other's objects, so the two stay independent. They are verifiably the same
