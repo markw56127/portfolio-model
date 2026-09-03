@@ -25,7 +25,14 @@ line, and tracing the frontier from two tangency portfolios. **Project 4**
 moves to topic 4, the single index model: regressing each stock on the index
 to get $\alpha_i$, $\beta_i$, $\sigma^2_{\epsilon_i}$, rebuilding the
 covariance matrix from those estimates, and redrawing Project 2's frontier on
-the new inputs.
+the new inputs. **Project 5** stays on topic 4: the optimal portfolio
+from $\mathbf{Z} = \Sigma^{-1}\mathbf{R}$ under that same covariance matrix,
+and the Blume and Vasicek beta adjustments scored by PRESS. **Project 6**
+completes topics 4 and 5: the Elton-Gruber-Padberg ranking and cut-off
+procedure, run with and without short sales under both the single index model
+and the constant correlation model. **Project 7** closes out topics 6 and 7:
+the multigroup model across the five sectors, and out of sample evaluation of
+every portfolio built so far over the testing period.
 
 Project 3 works on a different, smaller dataset than Projects 1 and 2 — see
 Data below. Project 4 returns to the shared data, since its frontier has to be
@@ -58,9 +65,11 @@ Monthly adjusted close prices downloaded through the Shiny app in `app.R`.
 | `stockData_train.csv` | 2017-01 – 2021-12 | 60 months |
 | `stockData_test.csv` | 2022-01 – 2026-07 | 55 months |
 
-Projects 1 and 2 use the training file only — the first five years, as the
-assignment requires. The test period is held back for out-of-sample evaluation
-in topic 7.
+Projects 1, 2, 4 and 6 use the training file only — the first five years, as
+the assignment requires. Project 5 uses both, splitting at January 2022 to get
+the two periods its beta adjustment question needs. Project 7 builds every
+portfolio on the training file and then evaluates them on the test file, which
+is the out of sample evaluation topic 7 asks for.
 
 Each file is laid out as a row index, a `Date` column, then the 31 assets, so
 the assignment's starter snippet indexes correctly:
@@ -156,7 +165,22 @@ project's own code and output lives in its own folder.
 | `Project4/single_index.R` | Analysis for parts 1–3; sourced by the report |
 | `Project4/fig_*.png` | Historical and single index frontiers, full view and zoom |
 | `Project4/Submission/` | The rendered deliverable |
+| `Project5/report.Rmd` | Write-up, knitted to pdf |
+| `Project5/beta_adjust.R` | Analysis for parts (a)–(c); sourced by the report |
+| `Project5/fig_*.png` | Optimal portfolio, Blume regression, Vasicek forecasts |
+| `Project5/Submission/` | The rendered deliverable |
+| `Project6/report.Rmd` | Write-up, knitted to pdf |
+| `Project6/optimization.R` | Analysis for parts (a)–(e); sourced by the report |
+| `Project6/fig_*.png` | Tangency portfolios under each model, and the no-short-sales frontier |
+| `Project6/Submission/` | The rendered deliverable |
+| `Project7/report.Rmd` | Write-up, knitted to pdf |
+| `Project7/performance.R` | Analysis for parts (a)–(b); sourced by the report |
+| `Project7/fig_*.png` | All portfolios in mean-sd space, growth of $1, Fama decomposition |
+| `Project7/Submission/` | The rendered deliverable |
 | `Homework4/homework4.R` | Homework 4 exercise 1: the PRESS decomposition, using period 1 betas from the training file to predict period 2 betas from the test file |
+| `Homework7/homework7.tex` | Homework 7 write-up, compiled with the `exam` class |
+| `Homework7/homework7.R` | The R code behind every figure in it |
+| `Homework7/hw7_*.png` | Option payoff and profit diagrams |
 
 Each project recomputes the returns from the shared csvs rather than importing
 the other's objects, so the two stay independent. They are verifiably the same
