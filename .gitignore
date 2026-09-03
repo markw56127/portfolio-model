@@ -11,6 +11,8 @@
 # LaTeX intermediates from knitting to pdf. Not *.pdf -- the rendered report
 # in Project1/Submission/ is the deliverable and is tracked.
 *.tex
+# ...but hand written LaTeX sources are not knitr output and must be tracked
+!Homework*/*.tex
 *.aux
 *.toc
 *.out
